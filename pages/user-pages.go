@@ -16,7 +16,10 @@ type MainPageData struct {
 }
 
 func MainPage(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/client-main.html")
+	tmpl, err := template.ParseFiles(
+		"templates/client-main.html",
+		"templates/header.html",
+	)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
@@ -41,6 +44,6 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		Danger: stringsData[1],
 		Level:  stringsData[10]}
 
-	tmpl.Execute(w, data)
+	tmpl.ExecuteTemplate(w, "client-main", data)
 
 }

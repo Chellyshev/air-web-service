@@ -1,10 +1,11 @@
+{{define "client-main"}}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>СППУР "Адаптация"</title>
-    <link rel="stylesheet" href="styles/client-main.css" />
+    <link rel="stylesheet" href="/styles/client-main.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
@@ -13,19 +14,7 @@
     <script src="scripts/client-main.js"></script>
   </head>
   <body>
-    <header>
-      <nav class="head">
-        <a class="logo" href="/"><h2>СППУР "Адаптация"</h2></a>
-        <ul>
-          <li><a class="nav-item active" href="/">Главная</a></li>
-          <li><a class="nav-item" href="/graphs">Статистика и графики</a></li>
-          <li><a class="nav-item" href="/prediction">Прогноз экологической ситуации</a></li>
-          <li><a class="nav-item" href="/rules">Нормативная база</a></li>
-          <li><a class="nav-item" href="/login">Вход</a></li>
-        </ul>
-      </nav>
-    </header>
-
+    {{template "header"}}
     <div class="container">
       <h1>Экологические показатели региона</h1>
       <div class="cards">
@@ -60,3 +49,4 @@
     </div>
   </body>
 </html>
+{{end}}
