@@ -7,25 +7,6 @@ body {
   padding: 0;
 }
 
-nav {
-  background-color: #0f3d3e;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-nav li {
-  display: inline-block;
-  flex: 1;
-  text-align: center;
-}
-
 nav h2 {
   font-family: var(--font-family-inter);
   color: #fff;
@@ -34,24 +15,43 @@ nav h2 {
   padding-right: 10px;
 }
 
-nav a {
+nav {
+  background-color: #0f3d3e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  list-style: none;
+}
+
+nav .nav-item {
   font-family: var(--font-family-inter);
-  flex: 1;
-  text-align: center;
   font-weight: 600;
   color: #fff;
   opacity: 0.5;
   display: block;
-  padding-block: 30px;
-  padding-inline: 20px;
+  padding: 30px 20px;
   text-decoration: none;
 }
-nav a:hover {
+
+nav .nav-item:hover {
   opacity: 1;
 }
 
-nav a.active {
+nav .nav-item.active {
   opacity: 1;
+}
+
+nav a.logo{
+    text-decoration: none;
 }
 
 .container {

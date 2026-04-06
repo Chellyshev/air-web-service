@@ -1,0 +1,93 @@
+:root {
+  --font-family-inter: "Inter", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+nav h2 {
+  font-family: var(--font-family-inter);
+  color: #fff;
+  opacity: 0.9;
+  margin: 20px;
+  padding-right: 10px;
+}
+
+nav {
+  background-color: #0f3d3e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  list-style: none;
+}
+
+nav .nav-item {
+  font-family: var(--font-family-inter);
+  font-weight: 600;
+  color: #fff;
+  opacity: 0.5;
+  display: block;
+  padding: 30px 20px;
+  text-decoration: none;
+}
+
+nav .nav-item:hover {
+  opacity: 1;
+}
+
+nav .nav-item.active {
+  opacity: 1;
+}
+
+a.logo {
+    font-family: var(--font-family-inter);
+    text-decoration: none;
+}
+
+a.nav-item:hover {
+  opacity: 1;
+}
+
+a.nav-item.active{
+  opacity: 1;
+}
+
+.container {
+  font-family: var(--font-family-inter);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  margin-bottom: 100px;
+}
+
+.container h1 {
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+
+
+.chart {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.chart canvas {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+width: 100% !important;
+  height: 300px !important;
+}

@@ -2,6 +2,7 @@ package pages
 
 import (
 	"crypto/md5"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -18,7 +19,14 @@ type MainPageData struct {
 	Level  string
 }
 
+var Db *sql.DB
+
 func MainPage(w http.ResponseWriter, r *http.Request) {
+	_, err := r.Cookie("session_id")
+	if err != http.ErrNoCookie {
+		http.Redirect(w, r, "/admin/", http.StatusFound)
+		return
+	}
 	tmpl, err := template.ParseFiles(
 		"templates/client-main.html",
 		"templates/header.html",
@@ -83,4 +91,50 @@ func CheckLogin(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, &cookie)
 	http.Redirect(w, r, "/admin/", http.StatusSeeOther)
+}
+
+func Graphs(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles(
+		"templates/graphs.html",
+		"templates/header.html",
+	)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+	tmpl.ExecuteTemplate(w, "graphs", nil)
+}
+func GetWeekData(w http.ResponseWriter, r *http.Request) {
+	rows, err := Db.Query(`
+		SELECT time, pm2p5, pm10, no2, co
+		FROM monthly_air_data
+		WHERE time >= NOW() - INTERVAL '7 days'
+		ORDER BY time
+	`)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	defer rows.Close()
+
+	type Point struct {
+		Time string  `json:"time"`
+		PM25 float64 `json:"pm25"`
+		PM10 float64 `json:"pm10"`
+		NO2  float64 `json:"no2"`
+		CO   float64 `json:"co"`
+	}
+
+	var data []Point
+
+	for rows.Next() {
+		var t time.Time
+		var p Point
+
+		rows.Scan(&t, &p.PM25, &p.PM10, &p.NO2, &p.CO)
+		p.Time = t.Format("2006-01-02 15:04")
+
+		data = append(data, p)
+	}
+
+	json.NewEncoder(w).Encode(data)
 }
