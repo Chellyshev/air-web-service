@@ -1,0 +1,118 @@
+{{define "admin-main"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>СППУР "Адаптация"</title>
+    <link rel="stylesheet" href="/styles/admin-main.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="scripts/client-main.js"></script>
+  </head>
+  <body>
+    {{template "admin-header"}}
+    <div class="container">
+      <div class="aqi-card">
+        <svg viewBox="0 0 200 120" class="gauge">
+          <!-- градиент -->
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#00e400" />
+              <stop offset="50%" stop-color="#ffff00" />
+              <stop offset="75%" stop-color="#ff7e00" />
+              <stop offset="100%" stop-color="#ff0000" />
+            </linearGradient>
+          </defs>
+
+          <!-- дуга -->
+          <path
+            id="arc"
+            d="M 20 100 A 80 80 0 0 1 180 100"
+            stroke="url(#grad)"
+            stroke-width="12"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <!-- точка -->
+          <circle id="dot" r="6" fill="#fff" />
+
+          <!-- значение -->
+          <text id="value" x="100" y="70" text-anchor="middle" class="value">
+            63
+          </text>
+          <text x="100" y="90" text-anchor="middle" class="label">AQI</text>
+        </svg>
+      </div>
+      <div class="tables">
+        <div class="data-table">
+          <h2>Состояние атмосферного воздуха на сегодня</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>PM2.5</th>
+                <th>PM10</th>
+                <th>CO</th>
+                <th>NO<sub>2</sub></th>
+                <th>AQI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10</td>
+                <td>20</td>
+                <td>30</td>
+                <td>40</td>
+                <td>64</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="data-table">
+          <h2>Прогноз состояния атмосферного воздуха на завтра</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>PM2.5</th>
+                <th>PM10</th>
+                <th>CO</th>
+                <th>NO<sub>2</sub></th>
+                <th>AQI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10</td>
+                <td>20</td>
+                <td>30</td>
+                <td>40</td>
+                <td>64</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="to-do">
+      <div class="advice">
+        <h3>Ситуация</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione modi iure numquam ipsum provident rem perferendis incidunt inventore, nam ipsa ut, itaque fugit id alias molestiae autem! Iusto, enim accusamus?</p>
+      </div>
+      <div class="advice">
+        <h3>Риск</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione modi iure numquam ipsum provident rem perferendis incidunt inventore, nam ipsa ut, itaque fugit id alias molestiae autem! Iusto, enim accusamus?</p>
+      </div>
+      <div class="advice">
+        <h3>Факторы</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione modi iure numquam ipsum provident rem perferendis incidunt inventore, nam ipsa ut, itaque fugit id alias molestiae autem! Iusto, enim accusamus?</p>
+      </div>
+      <div class="advice">
+        <h3>Меры</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione modi iure numquam ipsum provident rem perferendis incidunt inventore, nam ipsa ut, itaque fugit id alias molestiae autem! Iusto, enim accusamus?</p>
+      </div>
+  </body>
+</html>
+{{end}}

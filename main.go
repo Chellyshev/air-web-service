@@ -8,11 +8,23 @@ import (
 
 func main() {
 	fs := http.FileServer(http.Dir("templates"))
-	http.Handle("/styles/", fs)
-	http.Handle("/scripts/", fs)
 
-	http.HandleFunc("/", pages.MainPage)
+	adminMux := http.NewServeMux()
+	adminMux.HandleFunc("/", pages.AdminMain)
+	adminMux.HandleFunc("/panic", pages.PanicPage)
+
+	// set middleware
+	adminHandler := pages.AdminAuthMiddleware(adminMux)
+
+	siteMux := http.NewServeMux()
+	siteMux.Handle("/admin/", adminHandler)
+	siteMux.HandleFunc("/", pages.MainPage)
+	siteMux.HandleFunc("/login", pages.LoginForm)
+	siteMux.HandleFunc("/check", pages.CheckLogin)
+	siteMux.HandleFunc("/logout", pages.Logout)
+	siteMux.Handle("/styles/", fs)
+	siteMux.Handle("/scripts/", fs)
 	fmt.Println("Starting server at :8081")
-	http.ListenAndServe(":8081", nil)
+	http.ListenAndServe(":8081", siteMux)
 
 }

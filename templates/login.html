@@ -1,0 +1,43 @@
+{{define "login"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>СППУР "Адаптация"</title>
+    <link rel="stylesheet" href="/styles/login.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/scripts/login.js"></script>
+  </head>
+  <body>
+    {{template "header"}}
+    <main class="auth-wrapper">
+      <h1 class="auth-title">Вход</h1>
+
+      <form action="/check" class="auth-form" method="post">
+        <label for="login">Логин</label>
+        <input type="text" id="login" name="login" placeholder="Введите логин" required />
+
+        <label for="password">Пароль</label>
+        <input
+        name="password"
+          type="password"
+          id="password"
+          placeholder="Введите пароль"
+          required
+        />
+
+        <label class="auth-remember">
+          <input type="checkbox" />
+          Запомнить меня
+        </label>
+
+        <button type="submit" class="auth-btn">Вход</button>
+      </form>
+    </main>
+  </body>
+</html>
+{{end}}
