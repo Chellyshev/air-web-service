@@ -14,28 +14,28 @@
     <script src="scripts/client-main.js"></script>
   </head>
   <body>
-    {{template "header"}}
+    {{template "header" .}}
     <div class="container">
       <h1>Экологические показатели региона</h1>
       <div class="cards">
         <div class="card">
-          <div class="card-img">
-            <p class="card-value card-num">{{.AQI}}</p>
+          <div class="card-img center">
+            <p class="card-value card-num">{{.Data.AQI}}</p>
           </div>
           <p>Индекс экологического состояния региона</p>
         </div>
 
         <div class="card">
-          <div class="card-img">
-            <p class="card-value">{{.Level}}</p>
+          <div class="card-img left">
+            <p class="card-value">{{.Data.Warning}}</p>
           </div>
           <p>Текущий уровень риска</p>
         </div>
 
         <div class="card">
-          <div class="card-img">
+          <div class="card-img left">
             <p class="card-value">
-              {{.Danger}}
+              {{.Data.Situation}}
             </p>
           </div>
           <p>Краткая аналитика</p>

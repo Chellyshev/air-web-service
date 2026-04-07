@@ -3,11 +3,10 @@
       <nav class="head">
         <a class="logo" href="/"><h2>СППУР "Адаптация"</h2></a>
         <ul>
-          <li><a class="nav-item active" href="/">Главная</a></li>
-          <li><a class="nav-item" href="/graphs">Статистика и графики</a></li>
-          <li><a class="nav-item" href="/prediction">Прогноз экологической ситуации</a></li>
-          <li><a class="nav-item" href="/rules">Нормативная база</a></li>
-          <li><a class="nav-item" href="/login">Вход</a></li>
+          <li><a class="nav-item {{if eq .Active "main"}}active{{end}}" href="/">Главная</a></li>
+          <li><a class="nav-item {{if eq .Active "charts"}}active{{end}}" href="/charts">Статистика и графики</a></li>
+          <li><a class="nav-item {{if eq .Active "rules"}}active{{end}}" href="/rules">Нормативная база</a></li>
+          <li><a class="nav-item {{if eq .Active "login"}}active{{end}}" href="/login">Вход</a></li>
         </ul>
       </nav>
     </header>

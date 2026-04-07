@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	pages.Scheduler()
 	var err error
 	pages.Db, err = sql.Open("postgres", "postgres://air_user:123456@localhost/air_quality?sslmode=disable")
 	if err != nil {
@@ -25,7 +26,6 @@ func main() {
 
 	adminMux := http.NewServeMux()
 	adminMux.HandleFunc("/", pages.AdminMain)
-	adminMux.HandleFunc("/panic", pages.PanicPage)
 
 	// set middleware
 	adminHandler := pages.AdminAuthMiddleware(adminMux)
@@ -36,7 +36,7 @@ func main() {
 	siteMux.HandleFunc("/login", pages.LoginForm)
 	siteMux.HandleFunc("/check", pages.CheckLogin)
 	siteMux.HandleFunc("/logout", pages.Logout)
-	siteMux.HandleFunc("/graphs", pages.Graphs)
+	siteMux.HandleFunc("/charts", pages.Charts)
 	siteMux.HandleFunc("/api/week", pages.GetWeekData)
 	siteMux.Handle("/styles/", fs)
 	siteMux.Handle("/scripts/", fs)

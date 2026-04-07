@@ -7,19 +7,127 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"math"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 	"web/models"
 )
 
 type MainPageData struct {
-	AQI    int
-	Danger string
-	Level  string
+	AQI       int
+	Warning   string
+	Situation string
 }
 
 var Db *sql.DB
+var APIData = new(models.JsonPrediction)
+var LLMPrediction = new(models.LLMPrediction)
+
+func Scheduler() {
+	go func() {
+		Update()
+		for {
+			time.Sleep(24 * time.Hour)
+			Update()
+		}
+	}()
+}
+
+func cleanBullet(line string) string {
+	line = strings.TrimPrefix(line, "-")
+	line = strings.TrimSpace(line)
+	return line
+}
+
+func parseValue(line string) {
+	parts := strings.Split(line, "—")
+	if len(parts) < 2 {
+		return
+	}
+
+	name := strings.TrimSpace(parts[0])
+	valuePart := strings.TrimSpace(parts[1])
+
+	valueStr := strings.Split(valuePart, "(")[0]
+	valueStr = strings.TrimSpace(valueStr)
+
+	val, err := strconv.ParseFloat(valueStr, 64)
+	if err != nil {
+		return
+	}
+
+	switch {
+	case strings.Contains(name, "PM2.5"):
+		LLMPrediction.Pm25 = math.Round(val*100) / 100
+	case strings.Contains(name, "PM10"):
+		LLMPrediction.Pm10 = math.Round(val*100) / 100
+	case strings.Contains(name, "NO2"):
+		LLMPrediction.NO2 = math.Round(val*100) / 100
+	case strings.Contains(name, "CO"):
+		LLMPrediction.CO = math.Round(val*100) / 100
+	}
+}
+
+func Update() {
+	resp, err := http.Get("http://127.0.0.1:8080/forecast")
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	bytes_data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	json.Unmarshal(bytes_data, APIData)
+	lines := strings.Split(APIData.LLMResponse, "\n")
+
+	section := ""
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+
+		switch {
+		case strings.HasPrefix(line, "СИТУАЦИЯ"):
+			section = "situation"
+			continue
+		case strings.HasPrefix(line, "ПОКАЗАТЕЛИ"):
+			section = "values"
+			continue
+		case strings.HasPrefix(line, "РИСК"):
+			section = "risk"
+			continue
+		case strings.HasPrefix(line, "ФАКТОРЫ"):
+			section = "facts"
+			continue
+		case strings.HasPrefix(line, "МЕРЫ"):
+			section = "todo"
+			continue
+		}
+
+		switch section {
+		case "situation":
+			LLMPrediction.Situation += line + " "
+		case "risk":
+			LLMPrediction.Warning += line + " "
+		case "values":
+			parseValue(line)
+		case "facts":
+			LLMPrediction.Facts = append(LLMPrediction.Facts, cleanBullet(line))
+		case "todo":
+			LLMPrediction.ToDo = append(LLMPrediction.ToDo, cleanBullet(line))
+		}
+	}
+
+	fmt.Println(LLMPrediction.ToDo)
+}
 
 func MainPage(w http.ResponseWriter, r *http.Request) {
 	_, err := r.Cookie("session_id")
@@ -36,28 +144,14 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	api_data := new(models.JsonPrediction)
-	resp, err := http.Get("http://127.0.0.1:8080/forecast")
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-	defer resp.Body.Close()
-	bytes_data, err := io.ReadAll(resp.Body)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-	json.Unmarshal(bytes_data, api_data)
-	stringsData := strings.Split(api_data.LLMResponse, "\n")
-	if len(stringsData) <= 1 {
-		http.Error(w, "I haven't data", 500)
-	}
-	data := MainPageData{AQI: 60,
-		Danger: stringsData[1],
-		Level:  stringsData[10]}
-
-	tmpl.ExecuteTemplate(w, "client-main", data)
+	data := MainPageData{AQI: models.CalcAQI(LLMPrediction.Pm25, models.Pm25Table),
+		Warning:   LLMPrediction.Warning,
+		Situation: LLMPrediction.Situation}
+	allData := struct {
+		Data   MainPageData
+		Active string
+	}{Data: data, Active: "main"}
+	tmpl.ExecuteTemplate(w, "client-main", allData)
 
 }
 
@@ -69,7 +163,8 @@ func LoginForm(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 	}
-	tmpl.ExecuteTemplate(w, "login", nil)
+	data := struct{ Active string }{"login"}
+	tmpl.ExecuteTemplate(w, "login", data)
 }
 
 func CheckLogin(w http.ResponseWriter, r *http.Request) {
@@ -93,15 +188,16 @@ func CheckLogin(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin/", http.StatusSeeOther)
 }
 
-func Graphs(w http.ResponseWriter, r *http.Request) {
+func Charts(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles(
-		"templates/graphs.html",
+		"templates/charts.html",
 		"templates/header.html",
 	)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 	}
-	tmpl.ExecuteTemplate(w, "graphs", nil)
+	data := struct{ Active string }{"charts"}
+	tmpl.ExecuteTemplate(w, "charts", data)
 }
 func GetWeekData(w http.ResponseWriter, r *http.Request) {
 	rows, err := Db.Query(`

@@ -42,7 +42,7 @@
 
           <!-- значение -->
           <text id="value" x="100" y="70" text-anchor="middle" class="value">
-            63
+            {{.Data.ActualAirData.AQI}}
           </text>
           <text x="100" y="90" text-anchor="middle" class="label">AQI</text>
         </svg>
@@ -62,11 +62,11 @@
             </thead>
             <tbody>
               <tr>
-                <td>{{.Pm25T}}</td>
-                <td>{{.Pm10T}}</td>
-                <td>{{.COT}}</td>
-                <td>{{.NO2T}}</td>
-                <td>{{.AQIT}}</td>
+                <td>{{.Data.ActualAirData.PM25}}</td>
+                <td>{{.Data.ActualAirData.PM10}}</td>
+                <td>{{.Data.ActualAirData.CO}}</td>
+                <td>{{.Data.ActualAirData.NO2}}</td>
+                <td>{{.Data.ActualAirData.AQI}}</td>
               </tr>
             </tbody>
           </table>
@@ -85,11 +85,11 @@
             </thead>
             <tbody>
               <tr>
-                <td>{{.Pm25N}}</td>
-                <td>{{.Pm10N}}</td>
-                <td>{{.CON}}</td>
-                <td>{{.NO2N}}</td>
-                <td>{{.AQIN}}</td>
+                <td>{{.Data.PredictionAirData.PM25}}</td>
+                <td>{{.Data.PredictionAirData.PM10}}</td>
+                <td>{{.Data.PredictionAirData.CO}}</td>
+                <td>{{.Data.PredictionAirData.NO2}}</td>
+                <td>{{.Data.PredictionAirData.AQI}}</td>
               </tr>
             </tbody>
           </table>
@@ -99,19 +99,23 @@
     <div class="to-do">
       <div class="advice">
         <h3>Ситуация</h3>
-        <p>{{.Situation}}</p>
+        <p>{{.Data.Situation}}</p>
       </div>
       <div class="advice">
         <h3>Риск</h3>
-        <p>{{.Warning}}</p>
+        <p>{{.Data.Warning}}</p>
       </div>
       <div class="advice">
         <h3>Факторы</h3>
-        <p>{{.Facts}}</p>
+        {{range .Data.Facts}}
+        <p>{{.}}</p>
+        {{end}}
       </div>
       <div class="advice">
         <h3>Меры</h3>
-        <p>{{.ToDo}}</p>
+        {{range .Data.ToDo}}
+        <p>{{.}}</p>
+        {{end}}
       </div>
   </body>
 </html>

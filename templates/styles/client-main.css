@@ -116,3 +116,20 @@ p.card-num{
 #map {
   height: 180px;
 }
+
+.card-img.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-img.left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.card-img.left .card-value {
+  text-align: left;
+}
