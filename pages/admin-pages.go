@@ -71,8 +71,13 @@ func AdminMain(w http.ResponseWriter, r *http.Request) {
 		Facts:             LLMPrediction.Facts,
 		ToDo:              LLMPrediction.ToDo,
 	}
+	allData := struct {
+		Data   adminPageData
+		Active string
+		User   bool
+	}{Data: data, Active: "main", User: false}
 
-	tmpl.ExecuteTemplate(w, "admin-main", data)
+	tmpl.ExecuteTemplate(w, "admin-main", allData)
 }
 
 func AdminAuthMiddleware(next http.Handler) http.Handler {

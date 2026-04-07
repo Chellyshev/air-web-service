@@ -12,7 +12,11 @@
     />
   </head>
   <body>
-    {{template "header" .}}
+      {{if .IsUser}}
+      {{template "admin-header" .}}
+      {{else}}
+      {{template "header" .}}
+      {{end}}
     <div class="container">
         <h1>Графики загрязнений воздуха в Тюмени за последние 7 дней</h1>
       <div class="chart">

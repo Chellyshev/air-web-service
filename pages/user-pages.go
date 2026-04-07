@@ -192,11 +192,22 @@ func Charts(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles(
 		"templates/charts.html",
 		"templates/header.html",
+		"templates/admin-header.html",
 	)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 	}
-	data := struct{ Active string }{"charts"}
+	var user bool
+	_, err = r.Cookie("session_id")
+	if err == http.ErrNoCookie {
+		user = false
+	} else {
+		user = true
+	}
+	data := struct {
+		Active string
+		IsUser bool
+	}{Active: "charts", IsUser: user}
 	tmpl.ExecuteTemplate(w, "charts", data)
 }
 func GetWeekData(w http.ResponseWriter, r *http.Request) {
