@@ -1,0 +1,52 @@
+:root {
+  --font-family-inter: "Inter", sans-serif;
+}
+
+body {
+  font-family: var(--font-family-inter);
+}
+
+
+.doc-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #f3f4f6;
+  border-radius: 12px;
+
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+
+.doc-content {
+  max-width: 80%;
+}
+
+.doc-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.doc-description {
+  font-size: 14px;
+  color: #555;
+}
+
+.download-btn {
+  background: #0f3d3e;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px 16px;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.download-btn:hover {
+  background: #176162;
+}

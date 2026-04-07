@@ -245,3 +245,36 @@ func GetWeekData(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(data)
 }
+
+func Documents(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles(
+		"templates/documents.html",
+		"templates/header.html",
+		"templates/admin-header.html",
+	)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+	var user bool
+	_, err = r.Cookie("session_id")
+	if err == http.ErrNoCookie {
+		user = false
+	} else {
+		user = true
+	}
+	data := struct {
+		Active string
+		IsUser bool
+	}{Active: "rules", IsUser: user}
+	tmpl.ExecuteTemplate(w, "documents", data)
+}
+
+func DownloadGN(w http.ResponseWriter, r *http.Request) {
+	file := r.URL.Query().Get("id")
+	filePath := "files/" + file + ".pdf"
+	fmt.Println("Download request")
+	w.Header().Set("Content-Disposition", "attachment; filename=GN_2.1.6.3492-17.pdf")
+	w.Header().Set("Content-Type", "application/pdf")
+
+	http.ServeFile(w, r, filePath)
+}

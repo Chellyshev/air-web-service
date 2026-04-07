@@ -1,0 +1,75 @@
+{{define "documents"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>СППУР "Адаптация"</title>
+    <link rel="stylesheet" href="/styles/client-main.css" />
+    <link rel="stylesheet" href="/styles/documents.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="scripts/documents.js"></script>
+  </head>
+  <body>
+      {{if .IsUser}}
+      {{template "admin-header" .}}
+      {{else}}
+      {{template "header" .}}
+      {{end}}
+    <div class="doc-card">
+      <div class="doc-content">
+        <div class="doc-title">Нормативы качества атмосферного воздуха</div>
+        <div class="doc-description">
+          ГН 2.1.6.3492-17 «Предельно допустимые концентрации загрязняющих
+          веществ в атмосферном воздухе населённых мест»
+        </div>
+      </div>
+      <button class="download-btn" onclick="downloadDoc(3492)">Скачать</button>
+    </div>
+        <div class="doc-card">
+      <div class="doc-content">
+        <div class="doc-title">Нормативное регулирование охраны атмосферного воздуха</div>
+        <div class="doc-description">
+          Федеральный закон №96-ФЗ «Об охране атмосферного воздуха» — устанавливает правовые основы контроля выбросов, 
+          вводит понятие ПДК, регулирует обязанности предприятий по снижению загрязнения и ответственность за нарушения.
+        </div>
+      </div>
+      <button class="download-btn" onclick="downloadDoc(96)">Скачать</button>
+    </div>
+        <div class="doc-card">
+      <div class="doc-content">
+        <div class="doc-title">Гигиенические нормативы качества окружающей среды</div>
+        <div class="doc-description">
+          СанПиН 1.2.3685-21 «Гигиенические нормативы и требования к обеспечению безопасности и (или) безвредности факторов среды обитания» — содержит актуализированные 
+          нормативы ПДК для воздуха, используемые для оценки воздействия загрязнений на здоровье населения.
+        </div>
+      </div>
+      <button class="download-btn" onclick="downloadDoc(3685)">Скачать</button>
+    </div>
+        <div class="doc-card">
+      <div class="doc-content">
+        <div class="doc-title">Регулирование выбросов при неблагоприятных условиях</div>
+        <div class="doc-description">
+          Постановление Правительства РФ №183 — определяет порядок снижения выбросов при неблагоприятных метеорологических условиях (НМУ), 
+          обязывает предприятия временно ограничивать загрязнение воздуха при риске превышения ПДК.
+        </div>
+      </div>
+      <button class="download-btn" onclick="downloadDoc(183)">Скачать</button>
+    </div>
+        <div class="doc-card">
+      <div class="doc-content">
+        <div class="doc-title">Общее экологическое регулирование и контроль</div>
+        <div class="doc-description">
+          Федеральный закон №7-ФЗ «Об охране окружающей среды» — регулирует систему 
+          экологического контроля, устанавливает меры ответственности за загрязнение, 
+          включая штрафы, ограничения и приостановку деятельности.
+        </div>
+      </div>
+      <button class="download-btn" onclick="downloadDoc(4)">Скачать</button>
+    </div>
+  </body>
+</html>
+{{end}}

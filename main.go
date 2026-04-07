@@ -37,6 +37,8 @@ func main() {
 	siteMux.HandleFunc("/check", pages.CheckLogin)
 	siteMux.HandleFunc("/logout", pages.Logout)
 	siteMux.HandleFunc("/charts", pages.Charts)
+	siteMux.HandleFunc("/rules", pages.Documents)
+	siteMux.HandleFunc("/download/", pages.DownloadGN)
 	siteMux.HandleFunc("/api/week", pages.GetWeekData)
 	siteMux.Handle("/styles/", fs)
 	siteMux.Handle("/scripts/", fs)
